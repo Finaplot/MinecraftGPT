@@ -5,7 +5,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalCause;
 import com.google.common.cache.RemovalListener;
 import it.ohalee.minecraftgpt.command.ChatCommand;
-import it.ohalee.minecraftgpt.handler.ChatHandler;
 import it.ohalee.minecraftgpt.handler.PlayerHandler;
 import it.ohalee.minecraftgpt.util.Messages;
 import org.bukkit.command.PluginCommand;
@@ -17,6 +16,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
+import org.json.JSONObject;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.ChatColor;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
+
 
 public class Main extends JavaPlugin {
 
@@ -26,12 +35,6 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-
-        OpenAI.init(getConfig().getString("API_KEY")).exceptionallyAsync(throwable -> {
-            getLogger().severe("Error while initializing OpenAI service! Is your API key valid?");
-            throwable.printStackTrace();
-            return null;
-        });
 
         CACHE = CacheBuilder.newBuilder()
                 .expireAfterWrite(30, TimeUnit.MINUTES)
