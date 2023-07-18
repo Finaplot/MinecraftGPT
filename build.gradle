@@ -35,6 +35,7 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.json:json:20200518'
 }
 
 shadowJar {
