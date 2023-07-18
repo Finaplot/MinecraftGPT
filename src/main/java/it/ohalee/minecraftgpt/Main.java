@@ -15,17 +15,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.json.JSONObject;
-import org.bukkit.event.Listener;
-import org.bukkit.event.EventHandler;
-import org.bukkit.ChatColor;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
-
-
 
 public class Main extends JavaPlugin {
 
@@ -48,7 +40,14 @@ public class Main extends JavaPlugin {
 
         String priority = getConfig().getString("chat-priority", "HIGH").toUpperCase();
         Class<AsyncPlayerChatEvent> eventClass = AsyncPlayerChatEvent.class;
-        getServer().getPluginManager().registerEvent(eventClass, new ChatHandler(this), EventPriority.valueOf(priority), (listener, event) -> {
+
+        // 创建和初始化聊天格式列表
+        List<String> chatFormatList = new ArrayList<>();
+        chatFormatList.add("Format 1");
+        chatFormatList.add("Format 2");
+        // 添加更多的聊天格式
+
+        getServer().getPluginManager().registerEvent(eventClass, new ChatHandler(this, true, true, chatFormatList), EventPriority.valueOf(priority), (listener, event) -> {
             try {
                 listener.getClass().getMethod("onAsyncPlayerChat", eventClass).invoke(listener, event);
             } catch (InvocationTargetException ex) {
